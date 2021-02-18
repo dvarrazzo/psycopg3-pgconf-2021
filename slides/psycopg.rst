@@ -94,10 +94,10 @@ But then, what happened?
 ``psycopg2`` problems: Python side 🐍
 ====================================
 
-* Blocking functions:
+* Supports multithreads
 
-  * Supports multithreads
-  * Green mode: supports green threads (``eventlet``, ``gevent``)
+  * Green threads supported too (``eventlet``, ``gevent``)
+  * But interface is blocking by designed (DBAPI v2.0 specs)
 
 .. code-block:: python3
 
@@ -115,6 +115,11 @@ But then, what happened?
 
   * Needs to use ``select()`` or similar
 
+* Confusing use of ``with``:
+
+  * 😅 ``with cursor()`` works as expected (sometimes redundant)
+  * 😤 ``with connect()`` doesn't close the connection, only the transaction
+  * 😟 ``with pool.getconn()`` missing 
 
 ----
 
@@ -126,11 +131,19 @@ The new project: ``psycopg3``!
     + 🇳🇿 Started in March 2020 (timidly)
     + 🇮🇹 Almost full time since October 2020 (intensely)
     + 🇬🇧 Expected first release April 2021 (hopefully)
+    +  💜 `Contributions and sponsorship welcome`__
+
+.. class:: sponsors
+
+   .. image:: img/sponsors.png
+       :width: 500px
+
+.. __: https://github.com/sponsors/dvarrazzo/
 
 ----
 
-Want: smooth migration path...
-==============================
+Want: smooth migration path... 💃
+=================================
 
 .. class:: font-bigger
 
@@ -158,8 +171,8 @@ Want: smooth migration path...
 
 ----
 
-...but make use of current idioms
-=================================
+...but make use of current idioms 🕺
+====================================
 
 .. code-block:: python3
 
@@ -214,7 +227,9 @@ Design: protocol generators
    :width: 800px
 
 * Only non-blocking libpq operations used
-* Thin Python wrappers for different interfaces or frameworks
+* Thin Python wrappers for different interfaces or frameworks (trio__?)
+
+.. __: https://trio.readthedocs.io/en/stable/
 
 ----
 
@@ -233,6 +248,11 @@ Design: sending data to DB
 ==========================
 
 * ``cur.execute("select %s + %s, %s", [42, 100_000, "h€llo"])``
+* The Python type is not always sufficient to decide the Postgres type
+
+  * Python ``datetime`` can be ``timestamp`` or ``timestamptz``
+  * Python ``list`` can be an ``ARRAY[]`` of any type...
+
 
 .. image:: img/psycopg3-dumpers.png
    :height: 400px
@@ -243,6 +263,7 @@ Design: receiving data from DB
 ==============================
 
 * ``cur.execute("select %s + %s, %s", [42, 100_000, "h€llo"])``
+* Type OID used to choose the ``Loader`` class
 
 .. image:: img/psycopg3-loaders.png
    :height: 400px
@@ -381,6 +402,21 @@ Notifications 💌
    there, I stopped
 
 ----
+
+A new connection pool 🏊
+========================
+
+.. class:: font-bigger
+
+    + Using the performing Java HikariCP__ for inspiration
+    + Queue of waiting client, timeout on ``getconn()``
+    + Background workers for maintenance/inspection
+    + ``with pool.connection()`` context manager
+
+.. __: https://github.com/brettwooldridge/HikariCP
+
+----
+
 
 😎 The future
 =============

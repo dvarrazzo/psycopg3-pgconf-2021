@@ -82,7 +82,7 @@
             </aside>
             
             <aside class="page_number">
-              1/24
+              1/25
             </aside>
           </footer>
         </div>
@@ -120,7 +120,7 @@
             </aside>
             
             <aside class="page_number">
-              2/24
+              2/25
             </aside>
           </footer>
         </div>
@@ -159,7 +159,7 @@
             </aside>
             
             <aside class="page_number">
-              3/24
+              3/25
             </aside>
           </footer>
         </div>
@@ -212,7 +212,7 @@
             </aside>
             
             <aside class="page_number">
-              4/24
+              4/25
             </aside>
           </footer>
         </div>
@@ -227,9 +227,9 @@
             
             
             <section><ul class="simple">
-<li>Blocking functions:<ul>
-<li>Supports multithreads</li>
-<li>Green mode: supports green threads (<tt class="docutils literal">eventlet</tt>, <tt class="docutils literal">gevent</tt>)</li>
+<li>Supports multithreads<ul>
+<li>Green threads supported too (<tt class="docutils literal">eventlet</tt>, <tt class="docutils literal">gevent</tt>)</li>
+<li>But interface is blocking by designed (DBAPI v2.0 specs)</li>
 </ul>
 </li>
 </ul>
@@ -247,6 +247,12 @@
 <li>Needs to use <tt class="docutils literal">select()</tt> or similar</li>
 </ul>
 </li>
+<li>Confusing use of <tt class="docutils literal">with</tt>:<ul>
+<li>😅 <tt class="docutils literal">with cursor()</tt> works as expected (sometimes redundant)</li>
+<li>😤 <tt class="docutils literal">with connect()</tt> doesn't close the connection, only the transaction</li>
+<li>😟 <tt class="docutils literal">with pool.getconn()</tt> missing</li>
+</ul>
+</li>
 </ul></section>
             
           </div>
@@ -263,7 +269,7 @@
             </aside>
             
             <aside class="page_number">
-              5/24
+              5/25
             </aside>
           </footer>
         </div>
@@ -281,7 +287,9 @@
 <li>🇳🇿 Started in March 2020 (timidly)</li>
 <li>🇮🇹 Almost full time since October 2020 (intensely)</li>
 <li>🇬🇧 Expected first release April 2021 (hopefully)</li>
-</ul></section>
+<li>💜 <a class="reference external" href="https://github.com/sponsors/dvarrazzo/">Contributions and sponsorship welcome</a></li>
+</ul>
+<img alt="img/sponsors.png" class="sponsors" src="img/sponsors.png" style="width: 500px;" /></section>
             
           </div>
           <div class="presenter_notes">
@@ -297,7 +305,7 @@
             </aside>
             
             <aside class="page_number">
-              6/24
+              6/25
             </aside>
           </footer>
         </div>
@@ -308,7 +316,7 @@
         <div class="slide slide-7">
           <div class="inner">
             
-            <header><h1>Want: smooth migration path...</h1></header>
+            <header><h1>Want: smooth migration path... 💃</h1></header>
             
             
             <section><ul class="font-bigger simple">
@@ -347,7 +355,7 @@
             </aside>
             
             <aside class="page_number">
-              7/24
+              7/25
             </aside>
           </footer>
         </div>
@@ -358,7 +366,7 @@
         <div class="slide slide-8">
           <div class="inner">
             
-            <header><h1>...but make use of current idioms</h1></header>
+            <header><h1>...but make use of current idioms 🕺</h1></header>
             
             
             <section><pre><span></span><span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">CONNINFO</span><span class="p">)</span>
@@ -399,7 +407,7 @@
             </aside>
             
             <aside class="page_number">
-              8/24
+              8/25
             </aside>
           </footer>
         </div>
@@ -427,7 +435,7 @@
             </aside>
             
             <aside class="page_number">
-              9/24
+              9/25
             </aside>
           </footer>
         </div>
@@ -464,7 +472,7 @@
             </aside>
             
             <aside class="page_number">
-              10/24
+              10/25
             </aside>
           </footer>
         </div>
@@ -481,7 +489,7 @@
             <section><img alt="img/psycopg3-sync-async.png" src="img/psycopg3-sync-async.png" style="width: 800px;" />
 <ul class="simple">
 <li>Only non-blocking libpq operations used</li>
-<li>Thin Python wrappers for different interfaces or frameworks</li>
+<li>Thin Python wrappers for different interfaces or frameworks (<a class="reference external" href="https://trio.readthedocs.io/en/stable/">trio</a>?)</li>
 </ul></section>
             
           </div>
@@ -498,7 +506,7 @@
             </aside>
             
             <aside class="page_number">
-              11/24
+              11/25
             </aside>
           </footer>
         </div>
@@ -532,7 +540,7 @@
             </aside>
             
             <aside class="page_number">
-              12/24
+              12/25
             </aside>
           </footer>
         </div>
@@ -548,6 +556,11 @@
             
             <section><ul class="simple">
 <li><tt class="docutils literal"><span class="pre">cur.execute(&quot;select</span> %s + %s, %s&quot;, [42, 100_000, <span class="pre">&quot;h€llo&quot;])</span></tt></li>
+<li>The Python type is not always sufficient to decide the Postgres type<ul>
+<li>Python <tt class="docutils literal">datetime</tt> can be <tt class="docutils literal">timestamp</tt> or <tt class="docutils literal">timestamptz</tt></li>
+<li>Python <tt class="docutils literal">list</tt> can be an <tt class="docutils literal">ARRAY[]</tt> of any type...</li>
+</ul>
+</li>
 </ul>
 <img alt="img/psycopg3-dumpers.png" src="img/psycopg3-dumpers.png" style="height: 400px;" /></section>
             
@@ -565,7 +578,7 @@
             </aside>
             
             <aside class="page_number">
-              13/24
+              13/25
             </aside>
           </footer>
         </div>
@@ -581,6 +594,7 @@
             
             <section><ul class="simple">
 <li><tt class="docutils literal"><span class="pre">cur.execute(&quot;select</span> %s + %s, %s&quot;, [42, 100_000, <span class="pre">&quot;h€llo&quot;])</span></tt></li>
+<li>Type OID used to choose the <tt class="docutils literal">Loader</tt> class</li>
 </ul>
 <img alt="img/psycopg3-loaders.png" src="img/psycopg3-loaders.png" style="height: 400px;" /></section>
             
@@ -598,7 +612,7 @@
             </aside>
             
             <aside class="page_number">
-              14/24
+              14/25
             </aside>
           </footer>
         </div>
@@ -626,7 +640,7 @@
             </aside>
             
             <aside class="page_number">
-              15/24
+              15/25
             </aside>
           </footer>
         </div>
@@ -674,7 +688,7 @@
             </aside>
             
             <aside class="page_number">
-              16/24
+              16/25
             </aside>
           </footer>
         </div>
@@ -725,7 +739,7 @@
             </aside>
             
             <aside class="page_number">
-              17/24
+              17/25
             </aside>
           </footer>
         </div>
@@ -772,7 +786,7 @@
             </aside>
             
             <aside class="page_number">
-              18/24
+              18/25
             </aside>
           </footer>
         </div>
@@ -826,7 +840,7 @@
             </aside>
             
             <aside class="page_number">
-              19/24
+              19/25
             </aside>
           </footer>
         </div>
@@ -835,6 +849,41 @@
       <!-- slide source: psycopg.rst -->
       <div class="slide-wrapper">
         <div class="slide slide-20">
+          <div class="inner">
+            
+            <header><h1>A new connection pool 🏊</h1></header>
+            
+            
+            <section><ul class="font-bigger simple">
+<li>Using the performing Java <a class="reference external" href="https://github.com/brettwooldridge/HikariCP">HikariCP</a> for inspiration</li>
+<li>Queue of waiting client, timeout on <tt class="docutils literal">getconn()</tt></li>
+<li>Background workers for maintenance/inspection</li>
+<li><tt class="docutils literal">with pool.connection()</tt> context manager</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/25
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-21">
           <div class="inner">
             
             <header><h1>😎 The future</h1></header>
@@ -854,7 +903,7 @@
             </aside>
             
             <aside class="page_number">
-              20/24
+              21/25
             </aside>
           </footer>
         </div>
@@ -862,7 +911,7 @@
       
       <!-- slide source: psycopg.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-21">
+        <div class="slide slide-22">
           <div class="inner">
             
             <header><h1>Streaming query 🌊</h1></header>
@@ -900,7 +949,7 @@
             </aside>
             
             <aside class="page_number">
-              21/24
+              22/25
             </aside>
           </footer>
         </div>
@@ -908,7 +957,7 @@
       
       <!-- slide source: psycopg.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-22">
+        <div class="slide slide-23">
           <div class="inner">
             
             <header><h1>Pipeline/batch mode 🚂</h1></header>
@@ -938,7 +987,7 @@
             </aside>
             
             <aside class="page_number">
-              22/24
+              23/25
             </aside>
           </footer>
         </div>
@@ -946,7 +995,7 @@
       
       <!-- slide source: psycopg.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-23">
+        <div class="slide slide-24">
           <div class="inner">
             
             <header><h1>Binary JSONB 🌍</h1></header>
@@ -1007,7 +1056,7 @@
             </aside>
             
             <aside class="page_number">
-              23/24
+              24/25
             </aside>
           </footer>
         </div>
@@ -1015,7 +1064,7 @@
       
       <!-- slide source: psycopg.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-24">
+        <div class="slide slide-25">
           <div class="inner">
             
             <header><h1>🤔 Questions?</h1></header>
@@ -1035,7 +1084,7 @@
             </aside>
             
             <aside class="page_number">
-              24/24
+              25/25
             </aside>
           </footer>
         </div>
@@ -1086,13 +1135,13 @@
       
       
       <tr id="toc-row-7">
-        <th><a href="#slide7">Want: smooth migration path...</a></th>
+        <th><a href="#slide7">Want: smooth migration path... 💃</a></th>
         <td><a href="#slide7">7</a></td>
       </tr>
       
       
       <tr id="toc-row-8">
-        <th><a href="#slide8">...but make use of current idioms</a></th>
+        <th><a href="#slide8">...but make use of current idioms 🕺</a></th>
         <td><a href="#slide8">8</a></td>
       </tr>
       
@@ -1164,32 +1213,38 @@
       
       
       <tr id="toc-row-20">
-        <th><a href="#slide20">😎 The future</a></th>
+        <th><a href="#slide20">A new connection pool 🏊</a></th>
         <td><a href="#slide20">20</a></td>
       </tr>
       
       
       <tr id="toc-row-21">
-        <th><a href="#slide21">Streaming query 🌊</a></th>
+        <th><a href="#slide21">😎 The future</a></th>
         <td><a href="#slide21">21</a></td>
       </tr>
       
       
       <tr id="toc-row-22">
-        <th><a href="#slide22">Pipeline/batch mode 🚂</a></th>
+        <th><a href="#slide22">Streaming query 🌊</a></th>
         <td><a href="#slide22">22</a></td>
       </tr>
       
       
       <tr id="toc-row-23">
-        <th><a href="#slide23">Binary JSONB 🌍</a></th>
+        <th><a href="#slide23">Pipeline/batch mode 🚂</a></th>
         <td><a href="#slide23">23</a></td>
       </tr>
       
       
       <tr id="toc-row-24">
-        <th><a href="#slide24">🤔 Questions?</a></th>
+        <th><a href="#slide24">Binary JSONB 🌍</a></th>
         <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">🤔 Questions?</a></th>
+        <td><a href="#slide25">25</a></td>
       </tr>
       
       

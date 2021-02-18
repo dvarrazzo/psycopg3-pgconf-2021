@@ -64,3 +64,8 @@ table {
 table td, table th {
   padding: 4px;
 }
+
+img.sponsors {
+  border: 2px solid black;
+  border-radius: 10px;
+}
