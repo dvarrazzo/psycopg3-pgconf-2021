@@ -120,7 +120,7 @@ But then, what happened?
 
   * 😅 ``with cursor()`` works as expected (sometimes redundant)
   * 😤 ``with connect()`` doesn't close the connection, only the transaction
-  * 😟 ``with pool.getconn()`` missing 
+  * 😟 ``with pool.getconn()`` missing
 
 ----
 
@@ -161,7 +161,7 @@ Want: smooth migration path... 💃
     @@ -1,8 +1,8 @@
     -import psycopg2
     +import psycopg3
- 
+
     -conn = psycopg2.connect(CONNINFO)
     +conn = psycopg3.connect(CONNINFO)
      cur = conn.cursor()
@@ -271,7 +271,7 @@ Design: receiving data from DB
 
 ----
 
-😍 Features 
+😍 Features
 ===========
 
 ----
@@ -394,7 +394,7 @@ Notifications 💌
    =# notify mychan, 'hey';
    NOTIFY
    =# notify mychan, 'stop';
-   NOTIFY    
+   NOTIFY
 
 .. code-block:: python3
 
@@ -487,7 +487,7 @@ Binary JSONB 🌍
 
       + https://github.com/dvarrazzo/jsonb_parser
 
-    + Let's make PostgreSQL is a NoNoSQL database! 🖤 
+    + Let's make PostgreSQL a NoNoSQL database! 🖤
 
 ========== ============= =========================================
 Parser     Time          Notes
