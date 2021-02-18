@@ -1,0 +1,2 @@
+landslide
+-e git+https://github.com/psycopg/psycopg3.git@f26bdcbc6c9c4c74a63f12e3e0250473ce3c3f3d#egg=psycopg3&subdirectory=psycopg3

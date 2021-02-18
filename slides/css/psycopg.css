@@ -1,0 +1,66 @@
+table.data-types {
+  border: none;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 150%;
+  background-color: #eef;
+}
+
+table.data-types td {
+  padding: 0.15em;
+}
+
+table.data-types th {
+  padding: 0.15em;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.font-bigger {
+  font-size: 120%;
+}
+
+.font-bigger li {
+  font-size: 30px;
+  margin-bottom: 15px;
+}
+
+ul li {
+  padding-bottom: 0;
+}
+
+.font-bigger li {
+  font-size: 30px;
+  margin-bottom: 15px;
+}
+
+pre {
+  background-color: white;
+  padding-bottom: 0.5em;
+  padding-top: 1em;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-size: 20px;
+}
+
+tt.literal {
+  font-weight: bold;
+}
+
+h1 tt.literal {
+  font-weight: normal;
+}
+
+table {
+  border-collapse: collapse;
+  font-size: 20px;
+  background-color: white;
+  left: 10em;
+}
+
+table td, table th {
+  padding: 4px;
+}

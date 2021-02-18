@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title><em>psycopg3:</em> a new generation of...</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="theme/css/print.css">
+    <link rel="stylesheet" media="screen, projection" href="theme/css/screen.css">
+    
+    
+      
+      <link rel="stylesheet" href="css/psycopg.css">
+      
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="theme/js/slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1><em>psycopg3:</em> a new generation of...</h1></header>
+            
+            
+            <section><h2>...all the love between Python and PostgreSQL</h2>
+<img alt="img/psycopg.png" src="img/psycopg.png" />
+<p class="text-right">PGConf.Online 2021, <tt class="docutils literal"><span class="pre">'2021-03-01'::date</span></tt></p>
+<p class="text-right">Daniele Varrazzo</p>
+<!-- Note to piro: you want
+:autocmd BufWritePost psycopg.rst :silent !make html --></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>What is <tt class="docutils literal">psycopg2</tt>?</h1></header>
+            
+            
+            <section><ul class="font-bigger simple">
+<li>⚙️ industry standard Python-PostgreSQL adapter</li>
+<li>💪 libpq based</li>
+<li>⚖️ 50% C, 50% Python</li>
+<li>🐍+🐘=❤️<ul>
+<li>For the 00's, and the 10's...</li>
+</ul>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1>But then, what happened?</h1></header>
+            
+            
+            <section><ul class="font-bigger simple">
+<li>⏩ The future became present<ul>
+<li>😖 (some of the past is back biting too...)</li>
+</ul>
+</li>
+<li>🐍 &quot;Where is my <tt class="docutils literal">asyncio</tt>?&quot;</li>
+<li>🐘 &quot;Where are my prepared statements??&quot;</li>
+<li>😱 &quot;Are you doing client-side binding???&quot;</li>
+<li>🖤 the 20's require new forms of love</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-4">
+          <div class="inner">
+            
+            <header><h1><tt class="docutils literal">psycopg2</tt> problems: Postgres side 🐘</h1></header>
+            
+            
+            <section><ul class="simple">
+<li>Client-side parameters binding</li>
+</ul>
+<pre><span></span><span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;hel&#39;lo&quot;</span><span class="p">,</span> <span class="mi">42</span><span class="p">])</span>
+<span class="c1">#                                v       v</span>
+<span class="c1"># 1) adapted to              &#39;hel&#39;&#39;lo&#39;  42</span>
+<span class="c1"># 2) merged to the query</span>
+</pre>
+<pre><span></span><span class="cm">/* becomes the C call */</span>
+<span class="n">PQexec</span><span class="p">(</span><span class="s">&quot;SELECT &#39;hel&#39;&#39;lo&#39;, 42&quot;</span><span class="p">);</span>
+</pre>
+<ul class="simple">
+<li>safe, but cannot be composed more<ul>
+<li>if we want to use COPY we need no quote/escape</li>
+<li>if we want to prepare we need server-side binding and <tt class="docutils literal">$1</tt>-style placeholders</li>
+</ul>
+</li>
+</ul>
+<pre><span></span><span class="cm">/* Should become the C call (simplified) */</span>
+<span class="n">PQexecParams</span><span class="p">(</span>
+    <span class="s">&quot;SELECT $1, $2&quot;</span><span class="p">,</span> <span class="p">{</span><span class="mi">25</span><span class="p">,</span> <span class="mi">23</span><span class="p">},</span> <span class="p">{</span><span class="s">&quot;hel&#39;lo&quot;</span><span class="p">,</span> <span class="s">&quot;42&quot;</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="mi">0</span><span class="p">);</span>
+<span class="cm">/*         ^            ^            ^     ^      ^  ^   ^</span>
+<span class="cm"> *       query         oids          params      format  result */</span>
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-5">
+          <div class="inner">
+            
+            <header><h1><tt class="docutils literal">psycopg2</tt> problems: Python side 🐍</h1></header>
+            
+            
+            <section><ul class="simple">
+<li>Blocking functions:<ul>
+<li>Supports multithreads</li>
+<li>Green mode: supports green threads (<tt class="docutils literal">eventlet</tt>, <tt class="docutils literal">gevent</tt>)</li>
+</ul>
+</li>
+</ul>
+<pre><span></span><span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;dbname=piro&quot;</span><span class="p">)</span>     <span class="c1"># blocks</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select foo, bar&quot;</span><span class="p">)</span>   <span class="c1"># blocks</span>
+</pre>
+<ul class="simple">
+<li>New I/O driven async concurrency</li>
+</ul>
+<pre><span></span><span class="k">await</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;dbname=piro&quot;</span><span class="p">)</span>
+<span class="k">await</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select foo, bar&quot;</span><span class="p">)</span>
+</pre>
+<ul class="simple">
+<li><tt class="docutils literal">psycopg2</tt> is async too... but not <tt class="docutils literal">asyncio</tt><ul>
+<li>Needs to use <tt class="docutils literal">select()</tt> or similar</li>
+</ul>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-6">
+          <div class="inner">
+            
+            <header><h1>The new project: <tt class="docutils literal">psycopg3</tt>!</h1></header>
+            
+            
+            <section><ul class="font-bigger simple">
+<li>🇳🇿 Started in March 2020 (timidly)</li>
+<li>🇮🇹 Almost full time since October 2020 (intensely)</li>
+<li>🇬🇧 Expected first release April 2021 (hopefully)</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-7">
+          <div class="inner">
+            
+            <header><h1>Want: smooth migration path...</h1></header>
+            
+            
+            <section><ul class="font-bigger simple">
+<li>major release, backward incompatible<ul>
+<li>server-side binding behave differently: queries need test</li>
+</ul>
+</li>
+<li>goal: minimal need to rewrite code</li>
+</ul>
+<pre><span></span><span class="gd">--- code2.py</span>
+<span class="gi">+++ code3.py</span>
+<span class="gu">@@ -1,8 +1,8 @@</span>
+<span class="gd">-import psycopg2</span>
+<span class="gi">+import psycopg3</span>
+
+<span class="gd">-conn = psycopg2.connect(CONNINFO)</span>
+<span class="gi">+conn = psycopg3.connect(CONNINFO)</span>
+ cur = conn.cursor()
+ cur.execute(&quot;SELECT * FROM table&quot;)
+ print(cur.fetchall())
+ cur.close()
+ conn.close()
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-8">
+          <div class="inner">
+            
+            <header><h1>...but make use of current idioms</h1></header>
+            
+            
+            <section><pre><span></span><span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">CONNINFO</span><span class="p">)</span>
+<span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM table&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">())</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1"># becomes ...</span>
+
+<span class="k">with</span> <span class="n">psycopg3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">CONNINFO</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cur</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">())</span>
+
+<span class="c1"># ... or even...</span>
+
+<span class="k">with</span> <span class="n">psycopg3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">CONNINFO</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM table&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">fetchall</span><span class="p">())</span>
+</pre>
+<ul class="simple">
+<li><tt class="docutils literal">with</tt> is supported in <tt class="docutils literal">psycopg2</tt> too, but for a less useful pattern
+(transactions)</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-9">
+          <div class="inner">
+            
+            <header><h1>🤓 Design</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-10">
+          <div class="inner">
+            
+            <header><h1>Design: <tt class="docutils literal">libpq</tt> wrapper</h1></header>
+            
+            
+            <section><img alt="img/psycopg3-libpq.png" src="img/psycopg3-libpq.png" style="width: 800px;" />
+<ul class="font-bigger simple">
+<li>Exhaustive access to <tt class="docutils literal">libpq</tt> interface</li>
+<li>Can be used on its own<ul>
+<li>Useful for prototyping client-server interaction</li>
+</ul>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-11">
+          <div class="inner">
+            
+            <header><h1>Design: protocol generators</h1></header>
+            
+            
+            <section><img alt="img/psycopg3-sync-async.png" src="img/psycopg3-sync-async.png" style="width: 800px;" />
+<ul class="simple">
+<li>Only non-blocking libpq operations used</li>
+<li>Thin Python wrappers for different interfaces or frameworks</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-12">
+          <div class="inner">
+            
+            <header><h1>Design: data adaptation</h1></header>
+            
+            
+            <section><img alt="img/psycopg3-transform.png" src="img/psycopg3-transform.png" style="width: 800px;" />
+<ul class="simple">
+<li>An explicit place to keep the state during querying</li>
+<li>Used everywhere to convert Python/Postgres data (COPY, composite types...)</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-13">
+          <div class="inner">
+            
+            <header><h1>Design: sending data to DB</h1></header>
+            
+            
+            <section><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">cur.execute(&quot;select</span> %s + %s, %s&quot;, [42, 100_000, <span class="pre">&quot;h€llo&quot;])</span></tt></li>
+</ul>
+<img alt="img/psycopg3-dumpers.png" src="img/psycopg3-dumpers.png" style="height: 400px;" /></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-14">
+          <div class="inner">
+            
+            <header><h1>Design: receiving data from DB</h1></header>
+            
+            
+            <section><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">cur.execute(&quot;select</span> %s + %s, %s&quot;, [42, 100_000, <span class="pre">&quot;h€llo&quot;])</span></tt></li>
+</ul>
+<img alt="img/psycopg3-loaders.png" src="img/psycopg3-loaders.png" style="height: 400px;" /></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-15">
+          <div class="inner">
+            
+            <header><h1>😍 Features</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-16">
+          <div class="inner">
+            
+            <header><h1>Support for <tt class="docutils literal">asyncio</tt> 🏹</h1></header>
+            
+            
+            <section><ul class="font-bigger simple">
+<li>Allows for collaborative parallelism<ul>
+<li>Control flow switch when I/O is performed</li>
+</ul>
+</li>
+<li>Available in current Python 3 versions</li>
+</ul>
+<pre><span></span><span class="kn">from</span> <span class="nn">psycopg3</span> <span class="k">import</span> <span class="n">AsyncConnection</span>
+
+<span class="k">async</span> <span class="k">with</span> <span class="n">AsyncConnection</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">CONNINFO</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="n">cur</span> <span class="o">=</span> <span class="k">await</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM table&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="k">await</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">())</span>
+</pre>
+<ul class="font-bigger simple">
+<li>New frameworks being built on it<ul>
+<li>FastAPI is great  🚀</li>
+</ul>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-17">
+          <div class="inner">
+            
+            <header><h1>Transactions as blocks 🤝</h1></header>
+            
+            
+            <section><ul class="font-bigger simple">
+<li>Support for transactions (nested, with <tt class="docutils literal">SAVEPOINT</tt>)</li>
+</ul>
+<pre><span></span><span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">CONNINFO</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">tx1</span><span class="p">:</span>
+    <span class="n">num_ok</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">operations</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">tx2</span><span class="p">:</span>
+                <span class="n">unreliable_operation</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">operation</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{operation}</span><span class="s2"> failed&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">num_ok</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">save_number_of_successes</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">num_ok</span><span class="p">)</span>
+</pre>
+<ul class="font-bigger simple">
+<li><tt class="docutils literal">raise Rollback(tx)</tt> also supported to jump out of a block.</li>
+<li>Thank you <a class="reference external" href="https://github.com/asqui/">&#64;asqui</a>!</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-18">
+          <div class="inner">
+            
+            <header><h1>COPY with Python objects 🚛</h1></header>
+            
+            
+            <section><ul class="font-bigger simple">
+<li>Supports text and binary format</li>
+<li>Copy by record (Python values) or block (preformatted)</li>
+<li>Allow for async COPY (if producer/consumer is async)</li>
+</ul>
+<pre><span></span><span class="n">records</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;world&quot;</span><span class="p">)]</span>
+
+<span class="k">with</span> <span class="n">cursor</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
+    <span class="s2">&quot;COPY sample (col1, col2, col3) FROM STDIN&quot;</span>
+<span class="p">)</span> <span class="k">as</span> <span class="n">copy</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">write_row</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+</pre>
+<pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data.out&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">cursor</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="s2">&quot;COPY table_name TO STDOUT&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">copy</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">copy</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-19">
+          <div class="inner">
+            
+            <header><h1>Notifications 💌</h1></header>
+            
+            
+            <section><ul class="font-bigger simple">
+<li>Receive messages about e.g. changed data</li>
+</ul>
+<pre><span></span><span class="kn">import</span> <span class="nn">psycopg3</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">CONNINFO</span><span class="p">,</span> <span class="n">autocommit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;LISTEN mychan&quot;</span><span class="p">)</span>
+
+<span class="n">gen</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">notifies</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">notify</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">notify</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">notify</span><span class="o">.</span><span class="n">payload</span> <span class="o">==</span> <span class="s2">&quot;stop&quot;</span><span class="p">:</span>
+        <span class="n">gen</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;there, I stopped&quot;</span><span class="p">)</span>
+</pre>
+<pre><span></span><span class="o">=#</span> <span class="k">notify</span> <span class="n">mychan</span><span class="p">,</span> <span class="s1">&#39;hey&#39;</span><span class="p">;</span>
+<span class="k">NOTIFY</span>
+<span class="o">=#</span> <span class="k">notify</span> <span class="n">mychan</span><span class="p">,</span> <span class="s1">&#39;stop&#39;</span><span class="p">;</span>
+<span class="k">NOTIFY</span>
+</pre>
+<pre><span></span><span class="n">Notify</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;mychan&#39;</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="s1">&#39;hey&#39;</span><span class="p">,</span> <span class="n">pid</span><span class="o">=</span><span class="mi">961823</span><span class="p">)</span>
+<span class="n">Notify</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;mychan&#39;</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="s1">&#39;stop&#39;</span><span class="p">,</span> <span class="n">pid</span><span class="o">=</span><span class="mi">961823</span><span class="p">)</span>
+<span class="n">there</span><span class="p">,</span> <span class="n">I</span> <span class="n">stopped</span>
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-20">
+          <div class="inner">
+            
+            <header><h1>😎 The future</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-21">
+          <div class="inner">
+            
+            <header><h1>Streaming query 🌊</h1></header>
+            
+            
+            <section><ul class="font-bigger simple">
+<li>A query that never ends!<ul>
+<li>Using libpq single-row mode</li>
+</ul>
+</li>
+<li>Not implemented yet in PostgreSQL<ul>
+<li>CockroachDB <a class="reference external" href="https://www.cockroachlabs.com/docs/stable/changefeed-for.html">CHANGEFEED FOR</a></li>
+<li>Materialize <a class="reference external" href="https://materialize.com/docs/sql/tail/#main">TAIL</a></li>
+</ul>
+</li>
+</ul>
+<pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;TAIL </span><span class="si">{self.view_name}</span><span class="s2"> WITH (PROGRESS)&quot;</span>
+
+<span class="k">async</span> <span class="k">for</span> <span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">progressed</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="o">*</span><span class="n">columns</span><span class="p">)</span> \
+        <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-22">
+          <div class="inner">
+            
+            <header><h1>Pipeline/batch mode 🚂</h1></header>
+            
+            
+            <section><ul class="font-bigger simple">
+<li>Planned in <tt class="docutils literal">psycopg3</tt></li>
+<li>In commitfest, scheduled for v14<ul>
+<li><a class="reference external" href="https://commitfest.postgresql.org/30/2724/">https://commitfest.postgresql.org/30/2724/</a></li>
+</ul>
+</li>
+<li>libpq-only changeset, supported by all server versions</li>
+</ul>
+<img alt="img/psycopg3-pipeline.png" src="img/psycopg3-pipeline.png" style="width: 800px;" /></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-23">
+          <div class="inner">
+            
+            <header><h1>Binary JSONB 🌍</h1></header>
+            
+            
+            <section><ul class="font-bigger simple">
+<li>Currently JSONB is transferred in text format<ul>
+<li>serializing, escaping on the server</li>
+<li>de-serializing on the client</li>
+</ul>
+</li>
+<li>Preliminary result show big speedup using JSONB transfer<ul>
+<li>In collaboration with PostgresPro</li>
+<li><a class="reference external" href="https://github.com/dvarrazzo/jsonb_parser">https://github.com/dvarrazzo/jsonb_parser</a></li>
+</ul>
+</li>
+<li>Let's make PostgreSQL is a NoNoSQL database! 🖤</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="20%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Parser</th>
+<th class="head">Time</th>
+<th class="head">Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>jsonb</td>
+<td>4.081119 sec</td>
+<td>Decoding using Python json module</td>
+</tr>
+<tr><td>orjson</td>
+<td>2.722768 sec</td>
+<td>Decoding using the faster <tt class="docutils literal">orjson</tt> module</td>
+</tr>
+<tr><td>jsonb-disk</td>
+<td>1.101547 sec</td>
+<td>Decode the on-disk JSONB format on client</td>
+</tr>
+</tbody>
+</table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-24">
+          <div class="inner">
+            
+            <header><h1>🤔 Questions?</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/24
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1"><em>psycopg3:</em> a new generation of...</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">What is <tt class="docutils literal">psycopg2</tt>?</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">But then, what happened?</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4"><tt class="docutils literal">psycopg2</tt> problems: Postgres side 🐘</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5"><tt class="docutils literal">psycopg2</tt> problems: Python side 🐍</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">The new project: <tt class="docutils literal">psycopg3</tt>!</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Want: smooth migration path...</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">...but make use of current idioms</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">🤓 Design</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">Design: <tt class="docutils literal">libpq</tt> wrapper</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">Design: protocol generators</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Design: data adaptation</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">Design: sending data to DB</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">Design: receiving data from DB</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">😍 Features</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">Support for <tt class="docutils literal">asyncio</tt> 🏹</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">Transactions as blocks 🤝</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">COPY with Python objects 🚛</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">Notifications 💌</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">😎 The future</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">Streaming query 🌊</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">Pipeline/batch mode 🚂</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Binary JSONB 🌍</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">🤔 Questions?</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
