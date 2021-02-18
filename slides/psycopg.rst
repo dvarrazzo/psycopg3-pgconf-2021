@@ -4,7 +4,8 @@
 ...all the love between Python and PostgreSQL
 ---------------------------------------------
 
-.. image:: img/psycopg.png
+.. image:: img/psycopg3.png
+   :height: 450px
 
 
 .. class:: text-right
