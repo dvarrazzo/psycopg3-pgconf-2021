@@ -5,12 +5,12 @@
 ---------------------------------------------
 
 .. image:: img/psycopg3.png
-   :height: 450px
+   :height: 420px
 
 
 .. class:: text-right
 
-    PGConf.Online 2021, ``'2021-03-01'::date``
+    PGConf.Online 2021, ``'[2021-03-01,2021-03-03]'::daterange``
 
     Daniele Varrazzo
 
