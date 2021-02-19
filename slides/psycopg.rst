@@ -404,6 +404,31 @@ Notifications 💌
 
 ----
 
+Prepared query 🍳
+==================
+
+.. class:: font-bigger
+
+    + Queries automatically prepared when seen repeatedly
+
+.. code-block:: python3
+
+   conn.execute(query, params, prepare=None)
+   cur.execute(query, params, prepare=None)
+
+* ``prepare=True``: prepare the query immediately
+* ``prepare=False``: don't prepare the query
+* ``prepare=None``: prepare the query automatically after seeing it a
+  few times (default)
+* ``connection.prepare_threshold``: how many times to see a query before
+  preparing it automatically (default: 5)
+* ``connection.prepared_max``: max number of queries to prepare before
+  evicting the least recently used (default: 100)
+
+
+
+----
+
 A new connection pool 🏊
 ========================
 
