@@ -82,7 +82,7 @@
             </aside>
             
             <aside class="page_number">
-              1/26
+              1/27
             </aside>
           </footer>
         </div>
@@ -120,7 +120,7 @@
             </aside>
             
             <aside class="page_number">
-              2/26
+              2/27
             </aside>
           </footer>
         </div>
@@ -159,7 +159,7 @@
             </aside>
             
             <aside class="page_number">
-              3/26
+              3/27
             </aside>
           </footer>
         </div>
@@ -212,7 +212,7 @@
             </aside>
             
             <aside class="page_number">
-              4/26
+              4/27
             </aside>
           </footer>
         </div>
@@ -269,7 +269,7 @@
             </aside>
             
             <aside class="page_number">
-              5/26
+              5/27
             </aside>
           </footer>
         </div>
@@ -305,7 +305,7 @@
             </aside>
             
             <aside class="page_number">
-              6/26
+              6/27
             </aside>
           </footer>
         </div>
@@ -355,7 +355,7 @@
             </aside>
             
             <aside class="page_number">
-              7/26
+              7/27
             </aside>
           </footer>
         </div>
@@ -407,7 +407,7 @@
             </aside>
             
             <aside class="page_number">
-              8/26
+              8/27
             </aside>
           </footer>
         </div>
@@ -435,7 +435,7 @@
             </aside>
             
             <aside class="page_number">
-              9/26
+              9/27
             </aside>
           </footer>
         </div>
@@ -472,7 +472,7 @@
             </aside>
             
             <aside class="page_number">
-              10/26
+              10/27
             </aside>
           </footer>
         </div>
@@ -506,7 +506,7 @@
             </aside>
             
             <aside class="page_number">
-              11/26
+              11/27
             </aside>
           </footer>
         </div>
@@ -540,7 +540,7 @@
             </aside>
             
             <aside class="page_number">
-              12/26
+              12/27
             </aside>
           </footer>
         </div>
@@ -578,7 +578,7 @@
             </aside>
             
             <aside class="page_number">
-              13/26
+              13/27
             </aside>
           </footer>
         </div>
@@ -612,7 +612,7 @@
             </aside>
             
             <aside class="page_number">
-              14/26
+              14/27
             </aside>
           </footer>
         </div>
@@ -640,7 +640,7 @@
             </aside>
             
             <aside class="page_number">
-              15/26
+              15/27
             </aside>
           </footer>
         </div>
@@ -688,7 +688,7 @@
             </aside>
             
             <aside class="page_number">
-              16/26
+              16/27
             </aside>
           </footer>
         </div>
@@ -739,7 +739,7 @@
             </aside>
             
             <aside class="page_number">
-              17/26
+              17/27
             </aside>
           </footer>
         </div>
@@ -786,7 +786,7 @@
             </aside>
             
             <aside class="page_number">
-              18/26
+              18/27
             </aside>
           </footer>
         </div>
@@ -840,7 +840,7 @@
             </aside>
             
             <aside class="page_number">
-              19/26
+              19/27
             </aside>
           </footer>
         </div>
@@ -861,14 +861,15 @@
 <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">prepare</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre>
 <ul class="simple">
+<li>Many ways to tweak automatic preparation<ul>
 <li><tt class="docutils literal">prepare=True</tt>: prepare the query immediately</li>
 <li><tt class="docutils literal">prepare=False</tt>: don't prepare the query</li>
-<li><tt class="docutils literal">prepare=None</tt>: prepare the query automatically after seeing it a
-few times (default)</li>
 <li><tt class="docutils literal">connection.prepare_threshold</tt>: how many times to see a query before
-preparing it automatically (default: 5)</li>
+preparing it automatically (default: 5, None disables preparation)</li>
 <li><tt class="docutils literal">connection.prepared_max</tt>: max number of queries to prepare before
 evicting the least recently used (default: 100)</li>
+</ul>
+</li>
 </ul></section>
             
           </div>
@@ -885,7 +886,7 @@ evicting the least recently used (default: 100)</li>
             </aside>
             
             <aside class="page_number">
-              20/26
+              20/27
             </aside>
           </footer>
         </div>
@@ -920,7 +921,7 @@ evicting the least recently used (default: 100)</li>
             </aside>
             
             <aside class="page_number">
-              21/26
+              21/27
             </aside>
           </footer>
         </div>
@@ -948,7 +949,7 @@ evicting the least recently used (default: 100)</li>
             </aside>
             
             <aside class="page_number">
-              22/26
+              22/27
             </aside>
           </footer>
         </div>
@@ -994,7 +995,7 @@ evicting the least recently used (default: 100)</li>
             </aside>
             
             <aside class="page_number">
-              23/26
+              23/27
             </aside>
           </footer>
         </div>
@@ -1032,7 +1033,7 @@ evicting the least recently used (default: 100)</li>
             </aside>
             
             <aside class="page_number">
-              24/26
+              24/27
             </aside>
           </footer>
         </div>
@@ -1101,7 +1102,7 @@ evicting the least recently used (default: 100)</li>
             </aside>
             
             <aside class="page_number">
-              25/26
+              25/27
             </aside>
           </footer>
         </div>
@@ -1129,7 +1130,35 @@ evicting the least recently used (default: 100)</li>
             </aside>
             
             <aside class="page_number">
-              26/26
+              26/27
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-27">
+          <div class="inner">
+            
+            <header><h1>🥰 Thank you!</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/27
             </aside>
           </footer>
         </div>
@@ -1296,6 +1325,12 @@ evicting the least recently used (default: 100)</li>
       <tr id="toc-row-26">
         <th><a href="#slide26">🤔 Questions?</a></th>
         <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">🥰 Thank you!</a></th>
+        <td><a href="#slide27">27</a></td>
       </tr>
       
       

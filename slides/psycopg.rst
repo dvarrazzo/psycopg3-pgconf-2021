@@ -416,14 +416,14 @@ Prepared statements 🍳
    conn.execute(query, params, prepare=None)
    cur.execute(query, params, prepare=None)
 
-* ``prepare=True``: prepare the query immediately
-* ``prepare=False``: don't prepare the query
-* ``prepare=None``: prepare the query automatically after seeing it a
-  few times (default)
-* ``connection.prepare_threshold``: how many times to see a query before
-  preparing it automatically (default: 5)
-* ``connection.prepared_max``: max number of queries to prepare before
-  evicting the least recently used (default: 100)
+* Many ways to tweak automatic preparation
+
+  + ``prepare=True``: prepare the query immediately
+  + ``prepare=False``: don't prepare the query
+  + ``connection.prepare_threshold``: how many times to see a query before
+    preparing it automatically (default: 5, None disables preparation)
+  + ``connection.prepared_max``: max number of queries to prepare before
+    evicting the least recently used (default: 100)
 
 
 
@@ -525,4 +525,9 @@ jsonb-disk 1.101547 sec  Decode the on-disk JSONB format on client
 ----
 
 🤔 Questions?
+=============
+
+----
+
+🥰 Thank you!
 =============
