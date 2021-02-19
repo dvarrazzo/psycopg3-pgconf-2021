@@ -404,8 +404,8 @@ Notifications 💌
 
 ----
 
-Prepared query 🍳
-==================
+Prepared statements 🍳
+======================
 
 .. class:: font-bigger
 
